@@ -6,51 +6,45 @@ using namespace std;
 class Solution
 {
 public:
-    string printMinNumberForPattern(string str)
+    int CountWays(string str)
     {
-        stack<int> s;
-        int num = 1;
-        string ans = "";
-        for (char i : str)
+        int n = str.length();
+        int dp[n + 1];
+        int mod = 1e9 + 7;
+        dp[0] = 1;
+        dp[1] = 1;
+
+        if (n == 1 && str[0] != '0')
+            return 1;
+        if (str[0] == '0')
+            return 0;
+
+        for (int i = 2; i <= n; i++)
         {
-            if (i == 'D')
-            {
-                s.push(num);
-                num++;
-            }
-            else
-            {
-                s.push(num);
-                num++;
-                while (!s.empty())
-                {
-                    ans += to_string(s.top());
-                    s.pop();
-                }
-            }
+            dp[i] = 0;
+
+            if (str[i - 1] > '0')
+                dp[i] = dp[i - 1];
+
+            if (str[i - 2] == '1' || str[i - 2] == '2' && str[i - 1] < '7')
+                dp[i] = (dp[i] + dp[i - 2]) % mod;
         }
-        s.push(num);
-        while (!s.empty())
-        {
-            ans += to_string(s.top());
-            s.pop();
-        }
-        return ans;
+        return dp[n];
     }
 };
 
 // { Driver Code Starts.
 int main()
 {
-    int t;
-    cin >> t;
-    while (t--)
+    int tc;
+    cin >> tc;
+    while (tc--)
     {
-        string S;
-        cin >> S;
-        Solution ob;
-        cout << ob.printMinNumberForPattern(S) << endl;
+        string str;
+        cin >> str;
+        Solution obj;
+        int ans = obj.CountWays(str);
+        cout << ans << "\n";
     }
     return 0;
-}
-// } Driver Code Ends
+} // } Driver Code Ends
