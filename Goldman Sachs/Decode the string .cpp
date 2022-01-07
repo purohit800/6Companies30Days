@@ -8,7 +8,7 @@ class Solution
 public:
     int CountWays(string str)
     {
-        int n = str.length();
+        int n = str.size();
         int dp[n + 1];
         int mod = 1e9 + 7;
         dp[0] = 1;
@@ -18,7 +18,6 @@ public:
             return 1;
         if (str[0] == '0')
             return 0;
-
         for (int i = 2; i <= n; i++)
         {
             dp[i] = 0;
