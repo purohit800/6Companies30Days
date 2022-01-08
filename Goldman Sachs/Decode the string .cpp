@@ -1,49 +1,59 @@
 // { Driver Code Starts
+// Initial Template for C++
+
 #include <bits/stdc++.h>
 using namespace std;
 
-// } Driver Code Ends
-class Solution
-{
+ // } Driver Code Ends
+// User function Template for C++
+
+class Solution{
 public:
-    int CountWays(string str)
+    bool isnums(char a)
     {
-        int n = str.size();
-        int dp[n + 1];
-        int mod = 1e9 + 7;
-        dp[0] = 1;
-        dp[1] = 1;
-
-        if (n == 1 && str[0] != '0')
-            return 1;
-        if (str[0] == '0')
-            return 0;
-        for (int i = 2; i <= n; i++)
+        return a>='0' && a<='9';
+    }
+    string rec(string s,int &i,int &n)
+    {
+        int num=0;
+        string ans="";
+        for(;i<n;i++)
         {
-            dp[i] = 0;
-
-            if (str[i - 1] > '0')
-                dp[i] = dp[i - 1];
-
-            if (str[i - 2] == '1' || str[i - 2] == '2' && str[i - 1] < '7')
-                dp[i] = (dp[i] + dp[i - 2]) % mod;
+            if(isnums(s[i]))
+                num = 10*num + s[i]-'0';
+            else if(s[i]=='[')
+            {
+                i++;
+                string temp=rec(s,i,n);
+                for(int j=0;j<num;j++)
+                    ans+=temp;
+                num=0;
+            }
+            else if(s[i]==']')
+                return ans;
+            else
+                ans+=s[i];
         }
-        return dp[n];
+    }
+    string decodedString(string s)
+    {
+        int i=0;
+        int n=s.size();
+        return rec(s,i,n);
     }
 };
 
 // { Driver Code Starts.
-int main()
-{
-    int tc;
-    cin >> tc;
-    while (tc--)
-    {
-        string str;
-        cin >> str;
-        Solution obj;
-        int ans = obj.CountWays(str);
-        cout << ans << "\n";
+
+int main(){
+    int t;
+    cin>>t;
+    while(t--){
+        string s;
+        cin>>s;
+        
+        Solution ob;
+        cout<<ob.decodedString(s)<<"\n";
     }
     return 0;
-} // } Driver Code Ends
+}  // } Driver Code Ends
